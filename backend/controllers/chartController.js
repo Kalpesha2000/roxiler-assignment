@@ -1,14 +1,10 @@
-const Transaction = require("../models/Transaction");
+const Transaction = require("../models/transactionModel");
 
 // API for bar chart
 const getBarChartData = async (req, res) => {
-  const { month } = req.query;
-  const startDate = new Date(month);
-  startDate.setDate(1);
-  const endDate = new Date(startDate);
-  endDate.setMonth(endDate.getMonth() + 1);
-
   try {
+    const { month } = req.query;
+
     const priceRanges = [
       { min: 0, max: 100 },
       { min: 101, max: 200 },
@@ -22,51 +18,23 @@ const getBarChartData = async (req, res) => {
       { min: 901, max: Infinity },
     ];
 
-    const barChartData = [];
+    const chartData = [];
 
     for (const range of priceRanges) {
       const count = await Transaction.countDocuments({
-        dateOfSale: { $gte: startDate, $lt: endDate },
-        price: { $gte: range.min, $lt: range.max },
+        dateOfSale: { $month: new Date(month) },
+        price: { $gte: range.min, $lte: range.max },
       });
 
-      barChartData.push({
-        range: `${range.min}-${range.max}`,
-        count,
-      });
+      chartData.push({ range: `${range.min} - ${range.max}`, count });
     }
 
-    res.json(barChartData);
+    res.status(200).json({ chartData });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "An error occurred while fetching bar chart data" });
-  }
-};
-
-// API for pie chart
-const getPieChartData = async (req, res) => {
-  const { month } = req.query;
-  const startDate = new Date(month);
-  startDate.setDate(1);
-  const endDate = new Date(startDate);
-  endDate.setMonth(endDate.getMonth() + 1);
-
-  try {
-    const categories = await Transaction.aggregate([
-      { $match: { dateOfSale: { $gte: startDate, $lt: endDate } } },
-      { $group: { _id: "$category", count: { $sum: 1 } } },
-    ]);
-
-    res.json(categories);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "An error occurred while fetching pie chart data" });
+    res.status(500).json({ error: "Failed to fetch bar chart data." });
   }
 };
 
 module.exports = {
   getBarChartData,
-  getPieChartData,
 };

@@ -1,20 +1,17 @@
-import React from "react";
-import TransactionsTable from "./TransactionTable";
-import TransactionStatistics from "./TransactionStatistics";
-import TransactionBarChart from "./TransactionBarChart";
-
-
-import "./App.css";
+import React from 'react';
+import TransactionsTable from './TransactionsTable';
+import TransactionsStatistics from './TransactionsStatistics';
+import TransactionsBarChart from './TransactionsBarChart';
+import TransactionsPieChart from './TransactionsPieChart';
 
 const App = () => {
   return (
-    <div className='app-container'>
-      <div className='heading-circle'>
-        <h1 className='heading-text'>Transaction Dashboard</h1>
-      </div>
+    <div>
+      <h1>Transactions</h1>
+      <TransactionsStatistics />
       <TransactionsTable />
-      <TransactionStatistics/>
-      <TransactionBarChart/>
+      <TransactionsBarChart />
+      <TransactionsPieChart />
     </div>
   );
 };

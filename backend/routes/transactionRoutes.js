@@ -1,10 +1,9 @@
 const express = require('express');
-const transactionController = require('../controllers/transactionController');
-const paginationMiddleware = require('../middlewares/paginationMiddleware');
-
 const router = express.Router();
+const transactionController = require('../controllers/transactionController');
+const paginationMiddleware = require('../middleware/paginationMiddleware');
 
-// Route for listing all transactions
-router.get('/', paginationMiddleware, transactionController.getAllTransactions);
+router.get('/initialize', transactionController.initializeDatabase);
+router.get('/', paginationMiddleware, transactionController.listTransactions);
 
 module.exports = router;

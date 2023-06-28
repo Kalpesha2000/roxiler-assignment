@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 
-// Define the Transaction schema
 const transactionSchema = new mongoose.Schema({
-  productTitle: String,
-  productDescription: String,
+  title: String,
+  description: String,
   price: Number,
   dateOfSale: Date,
   category: String,
   isSold: Boolean,
 });
 
-module.exports = mongoose.model('Transaction', transactionSchema);
+const Transaction = mongoose.model('Transaction', transactionSchema);
+
+module.exports = Transaction;

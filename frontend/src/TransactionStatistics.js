@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const TransactionsStatistics = () => {
   const [totalSaleAmount, setTotalSaleAmount] = useState(0);
@@ -12,42 +13,38 @@ const TransactionsStatistics = () => {
 
   const fetchStatistics = async () => {
     try {
-      const response = await fetch(`/statistics?month=${selectedMonth}`);
-      const data = await response.json();
-      setTotalSaleAmount(data.totalSaleAmount);
-      setTotalSoldItems(data.totalSoldItems);
-      setTotalNotSoldItems(data.totalNotSoldItems);
+      const response = await axios.get('/statistics', {
+        params: {
+          month: selectedMonth,
+        },
+      });
+
+      setTotalSaleAmount(response.data.totalSaleAmount);
+      setTotalSoldItems(response.data.totalSoldItems);
+      setTotalNotSoldItems(response.data.totalNotSoldItems);
     } catch (error) {
-      console.error('Error fetching statistics:', error);
+      console.log(error);
     }
+  };
+
+  const handleMonthChange = (e) => {
+    setSelectedMonth(e.target.value);
   };
 
   return (
     <div>
-      <h2>Transactions Statistics</h2>
-      <label>
-        Select Month:
-        <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}>
-          <option value="January">January</option>
-          <option value="February">February</option>
-          <option value="March">March</option>
-          <option value='April'>April</option>
-          <option value='May'>May</option>
-          <option value='June'>June</option>
-          <option value='Jully'>Jully</option>
-          <option value='August'>August</option>
-          <option value='September'>September</option>
-          <option value='October'>October</option>
-          <option value='November'>November</option>
-          <option value='December'>December</option>
-        </select>
-      </label>
-      <br />
-      <div>
-        <p>Total Sale Amount: {totalSaleAmount}</p>
-        <p>Total Sold Items: {totalSoldItems}</p>
-        <p>Total Not Sold Items: {totalNotSoldItems}</p>
-      </div>
+      <h2>Statistics</h2>
+
+      <select value={selectedMonth} onChange={handleMonthChange}>
+        <option value="January">January</option>
+        <option value="February">February</option>
+        <option value="March">March</option>
+        {/* Add more months */}
+      </select>
+
+      <p>Total Sale Amount: {totalSaleAmount}</p>
+      <p>Total Sold Items: {totalSoldItems}</p>
+      <p>Total Not Sold Items: {totalNotSoldItems}</p>
     </div>
   );
 };

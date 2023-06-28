@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const TransactionsBarChart = () => {
-  const [chartData, setChartData] = useState([]);
+const TransactionsPieChart = () => {
+  const [categoryData, setCategoryData] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState('March');
 
   useEffect(() => {
-    fetchChartData();
+    fetchCategoryData();
   }, [selectedMonth]);
 
-  const fetchChartData = async () => {
+  const fetchCategoryData = async () => {
     try {
-      const response = await axios.get('/chart', {
+      const response = await axios.get('/categories', {
         params: {
           month: selectedMonth,
         },
       });
 
-      setChartData(response.data.chartData);
+      setCategoryData(response.data.categoryData);
     } catch (error) {
       console.log(error);
     }
@@ -29,7 +29,7 @@ const TransactionsBarChart = () => {
 
   return (
     <div>
-      <h2>Bar Chart</h2>
+      <h2>Pie Chart</h2>
 
       <select value={selectedMonth} onChange={handleMonthChange}>
         <option value="January">January</option>
@@ -39,9 +39,9 @@ const TransactionsBarChart = () => {
       </select>
 
       <ul>
-        {chartData.map((data) => (
-          <li key={data.range}>
-            {data.range}: {data.count}
+        {categoryData.map((data) => (
+          <li key={data.category}>
+            {data.category}: {data.count} (items)
           </li>
         ))}
       </ul>
@@ -49,4 +49,4 @@ const TransactionsBarChart = () => {
   );
 };
 
-export default TransactionsBarChart;
+export default TransactionsPieChart;

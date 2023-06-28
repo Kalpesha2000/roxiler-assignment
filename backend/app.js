@@ -1,31 +1,28 @@
-const express = require("express");
-const connectDB = require("./utils/db");
-const transactionRoutes = require("./routes/transactionRoutes");
-const statisticsRoutes = require("./routes/statisticsRoutes");
-const chartRoutes = require("./routes/chartRoutes");
-const combinedRoutes = require("./routes/combinedRoutes");
+const express = require('express');
+const mongoose = require('mongoose');
+const transactionRoutes = require('./routes/transactionRoutes');
+const statisticsRoutes = require('./routes/statisticsRoutes');
+const chartRoutes = require('./routes/chartRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 
-// Load environment variables
-require("dotenv").config();
-
-// Connect to MongoDB
-connectDB();
-
-// Create Express app
 const app = express();
+const PORT = 5000;
 
-// Middleware
+
+mongoose.connect('mongodb://localhost:27017/mydatabase', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+
 app.use(express.json());
 
-// Routes
-app.use("/transactions", transactionRoutes);
-app.use("/statistics", statisticsRoutes);
-app.use("/charts", chartRoutes);
-app.use("/combined", combinedRoutes);
-app.use(express.static("public"));
+app.use('/transactions', transactionRoutes);
+app.use('/statistics', statisticsRoutes);
+app.use('/chart', chartRoutes);
+app.use('/categories', categoryRoutes);
 
-// Start the server
-const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
