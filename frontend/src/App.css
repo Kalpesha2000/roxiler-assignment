@@ -1,41 +1,48 @@
-.app-container {
-  background-color: #e6eefa;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.heading {
-  background-color: white;
-  border-radius: 50%;
-  padding: 20px;
+.App {
   text-align: center;
-  width: 200px;
-  margin-top: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  padding: 20px;
 }
 
-.heading-circle {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+h1 {
   margin-bottom: 20px;
 }
 
-.heading-text {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  margin: 0;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+input[type="text"], select {
+  padding: 8px;
+  margin-right: 10px;
+}
+
+button {
+  padding: 8px 16px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+img {
+  width: 50px;
+  height: auto;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+h2 {
+  margin-bottom: 10px;
+}

@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
 const transactionSchema = new mongoose.Schema({
+  id: Number,
   title: String,
   description: String,
   price: Number,
-  dateOfSale: Date,
   category: String,
-  isSold: Boolean,
+  sold: Boolean,
+  image: String,
+  dateOfSale: String
 });
 
-const Transaction = mongoose.model('Transaction', transactionSchema);
-
-module.exports = Transaction;
+module.exports = mongoose.model('Transaction', transactionSchema);

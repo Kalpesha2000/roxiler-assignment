@@ -1,28 +1,24 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const cors = require('cors');
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+
 const transactionRoutes = require('./routes/transactionRoutes');
 const statisticsRoutes = require('./routes/statisticsRoutes');
-const chartRoutes = require('./routes/chartRoutes');
-const categoryRoutes = require('./routes/categoryRoutes');
+const barChartRoutes = require('./routes/barChartRoutes');
+const combinedDataRoutes = require('./routes/combinedDataRoutes');
 
-const app = express();
-const PORT = 5000;
-
-
-mongoose.connect('mongodb://localhost:27017/mydatabase', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-
-app.use(express.json());
 
 app.use('/transactions', transactionRoutes);
 app.use('/statistics', statisticsRoutes);
-app.use('/chart', chartRoutes);
-app.use('/categories', categoryRoutes);
+app.use('/barchart', barChartRoutes);
+app.use('/combineddata', combinedDataRoutes);
 
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+const port = 3000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });

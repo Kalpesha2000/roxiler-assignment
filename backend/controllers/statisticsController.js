@@ -1,48 +1,40 @@
-const Transaction = require("../models/transactionModel");
+const Transaction = require('../models/Transaction');
 
-// API for statistics
-const getStatistics = async (req, res) => {
+exports.getStatistics = async (req, res) => {
+  const { month } = req.query;
+  
   try {
-    const { month } = req.query;
-
-    // Calculate total sale amount of selected month
     const totalSaleAmount = await Transaction.aggregate([
       {
         $match: {
-          dateOfSale: { $month: new Date(month) },
-          isSold: true,
-        },
+          dateOfSale: { $regex: new RegExp(month, 'i') },
+          sold: true
+        }
       },
       {
         $group: {
           _id: null,
-          totalSaleAmount: { $sum: "$price" },
-        },
-      },
+          totalSaleAmount: { $sum: '$price' }
+        }
+      }
     ]);
 
-    // Calculate total number of sold items of selected month
     const totalSoldItems = await Transaction.countDocuments({
-      dateOfSale: { $month: new Date(month) },
-      isSold: true,
+      dateOfSale: { $regex: new RegExp(month, 'i') },
+      sold: true
     });
 
-    // Calculate total number of not sold items of selected month
     const totalNotSoldItems = await Transaction.countDocuments({
-      dateOfSale: { $month: new Date(month) },
-      isSold: false,
+      dateOfSale: { $regex: new RegExp(month, 'i') },
+      sold: false
     });
 
-    res.status(200).json({
-      totalSaleAmount: totalSaleAmount[0]?.totalSaleAmount || 0,
+    res.json({
+      totalSaleAmount: totalSaleAmount.length > 0 ? totalSaleAmount[0].totalSaleAmount : 0,
       totalSoldItems,
-      totalNotSoldItems,
+      totalNotSoldItems
     });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch statistics." });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
   }
-};
-
-module.exports = {
-  getStatistics,
 };
